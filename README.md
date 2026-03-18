@@ -1,5 +1,8 @@
 # Habit Tracker
 
+## Description
+A simple CLI habit tracking tool.
+
 ### File Structure
 
 ---

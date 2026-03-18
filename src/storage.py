@@ -29,5 +29,3 @@ def save_data(data):
         # 'indent=4' makes JSON file human readable
         json.dump(data, file, indent=4)
 
-my_data = load_data()
-print(my_data)

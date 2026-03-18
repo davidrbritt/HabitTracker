@@ -1,5 +1,5 @@
 from storage import load_data, save_data
-from datetime import date
+from datetime import date, timedelta
 def add_habit(name):
     data = load_data()
 
@@ -18,3 +18,47 @@ def add_habit(name):
     save_data(data)
     print(f"SUCCESS - Added habit: {name} (ID: {new_id})")
 
+def complete_habit(habit_id):
+    """Marks a habit as complete for the day. Handles logic for streaks too."""
+    data = load_data()
+    today = str(date.today())
+    yesterday = str(date.today() - timedelta(days=1))
+
+    for habit in data["habits"]:
+        if habit["id"] == habit_id:
+            #Handle habits that are already done for the day
+            if today in habit["completed_dates"]:
+                print(f"! Habit '{habit['task']}' already completed today.")
+                return
+            
+            #Update habit streak logic
+            if habit["completed_dates"] and habit["completed_dates"][-1] == yesterday:
+                habit["streak"] += 1
+            else:
+                habit["streak"] = 1
+
+            habit["completed_dates"].append(today)
+            save_data(data)
+            print(f"SUCCESS! {habit['task']} streak is now {habit['streak']}!")
+            return
+        print(f"ERROR: No habit found with ID {habit_id}!")
+
+def list_habits():
+    data = load_data()
+
+    if not data["habits"]:
+        print("No habits found. Use 'add' to create one!")
+        return
+    
+    print("\n--- Your Active Habits ---")
+    print(f"{'ID':<4} | {'Habit Name':<30} | {'Streak':<7}")
+    print("-" * 45)
+
+    for habit in data["habits"]:
+        if habit.get("active", True):
+            #Add a checkmark if done today
+            today = str(date.today())
+            status = "✅" if today in habit["completed_dates"] else "❌"
+
+            print(f"{status} {habit['id']:<4} | {habit['task']:<30} | {habit['streak']:<7}")
+    print("\n")
