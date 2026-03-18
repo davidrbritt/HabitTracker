@@ -1,0 +1,26 @@
+{
+    "user_settings": {
+        "name": "User",
+        "goals_per_day": 3
+    },
+    "habits": [
+        {
+            "id": 1,
+            "task": "Japanese Grammar Practice",
+            "created_at": "2026-03-18",
+            "completed_dates": [
+                "2026-03-18"
+            ],
+            "streak": 1,
+            "active": true
+        },
+        {
+            "id": 2,
+            "task": "Go to the Gym with Nick",
+            "created_at": "2026-03-17",
+            "completed_dates": [],
+            "streak": 0,
+            "active": true
+        }
+    ]
+}
