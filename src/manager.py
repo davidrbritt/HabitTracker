@@ -43,7 +43,7 @@ def complete_habit(habit_id):
             save_data(data)
             print(f"SUCCESS! {habit['task']} streak is now {habit['streak']}!")
             return
-        print(f"ERROR: No habit found with ID {habit_id}!")
+    print(f"ERROR: No habit found with ID {habit_id}!")
 
 def list_habits():
     data = load_data()
