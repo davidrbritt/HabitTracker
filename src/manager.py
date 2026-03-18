@@ -4,7 +4,9 @@ def add_habit(name):
     data = load_data()
 
     #ID generation
-    new_id = len(data["habits"]) + 1
+    # Get all existing IDs. If the list is empty, start at 0.
+    existing_ids = [h["id"] for h in data["habits"]]
+    new_id = max(existing_ids, default=0) + 1
 
     new_habit = {
         "id": new_id,
@@ -62,3 +64,19 @@ def list_habits():
 
             print(f"{status} {habit['id']:<4} | {habit['task']:<30} | {habit['streak']:<7}")
     print("\n")
+
+def delete_habit(habit_id):
+    data = load_data()
+    found = False
+    
+    for habit in data["habits"]:
+        if habit["id"] == habit_id:
+            habit["active"] = False
+            found = True
+            break
+            
+    if found:
+        save_data(data)
+        print(f"SUCCESS: Habit {habit_id} has been archived.")
+    else:
+        print(f"ERROR: Habit {habit_id} not found.")
