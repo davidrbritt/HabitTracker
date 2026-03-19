@@ -1,4 +1,4 @@
-from storage import load_data, save_data
+from storage import load_data, save_data, load_config, save_config
 from datetime import date, timedelta
 def add_habit(name):
     data = load_data()
@@ -47,6 +47,10 @@ def complete_habit(habit_id):
 
 def list_habits(show_all=False):
     data = load_data()
+    config = load_config()
+    #Set icons to the user selected options in their config.json
+    check_mark = config["icons"].get("success", "✅")
+    x_mark = config["icons"].get("failure", "❌")
     #Filter: Show everything if show_all is True, otherwise only active habits
     habits_to_show = data["habits"] if show_all else [h for h in data["habits"] if h.get("active", True)]
     if not habits_to_show:
@@ -59,8 +63,7 @@ def list_habits(show_all=False):
 
     for habit in habits_to_show:
         #Add a checkmark if done today
-        check_mark = "✅"
-        x_mark = "❌"
+
         today = str(date.today())
         status = check_mark if today in habit["completed_dates"] else x_mark
         
@@ -106,6 +109,26 @@ def restore_habit(habit_id):
             print(f"SUCCESS: Habit {habit_id} ('{habit['task']}') has been restored.")
             break
     
-
     if not found:
         print(f"ERROR: Habit {habit_id} not found.")
+
+def update_icon(icon_type = None, new_icon = None, use_default = False):
+    config = load_config()
+
+    if use_default:
+        #Reset to def keys in config.json
+        config["icons"]["success"] = config["icons"].get("defsuccess", "✅")
+        config["icons"]["failure"] = config["icons"].get("deffailure", "❌")
+        save_config(config)
+        print("SUCCESS: Icons have been reset to default settings.")
+        return
+    
+    if not icon_type or not new_icon:
+        print("ERROR: Please specify a which icon to replace (success/failure) and an icon or use --default.")
+
+    if icon_type in ["success", "failure"]:
+        config["icons"][icon_type] = new_icon
+        save_config(config)
+        print(f"SUCCESS: {icon_type.capitalize()} icon updated to : {new_icon}")
+    else:
+        print("ERROR: Icon type must be either 'success' or 'failure'.")

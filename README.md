@@ -27,8 +27,8 @@ habit-tracker/
 
 ### Data Management & Recovery
 
-[ ] Archive View: Add a --show-deleted flag to the list command to view soft-deleted habits.  
-[ ] Restore Function: Implement a restore id command to flip the active status back to True.  
+[X] Archive View: Add a --show-deleted flag to the list command to view soft-deleted habits.  
+[] Restore Function: Implement a restore id command to flip the active status back to True.  
 [ ] Data Export: Add a command to export habit history to a CSV format for external analysis.  
 
 ### Customization & UI

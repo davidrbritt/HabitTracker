@@ -1,0 +1,23 @@
+{
+
+    "icons": {
+
+        "success": "✅",
+
+        "failure": "❌",
+        
+        "defsuccess":"✅",
+        
+        "deffailure": "❌"
+
+    },
+
+    "colors": {
+
+        "streak_high": "green",
+
+        "streak_low": "red"
+
+    }
+
+}
