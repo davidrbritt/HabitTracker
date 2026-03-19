@@ -61,19 +61,58 @@ def list_habits(show_all=False):
     print(f"{'ID':<4} | {'Habit Name':<30} | {'Streak':<7}")
     print("-" * 45)
 
-    for habit in habits_to_show:
-        #Add a checkmark if done today
+    # ANSI Color Codes
+    GREEN = "\033[92m"
+    RED = "\033[91m"
+    CYAN = "\033[96m"
+    BOLD = "\033[1m"
+    RESET = "\033[0m"
 
+    for habit in habits_to_show:
+
+        #Add a checkmark if done today
+        # Status icon color (Success = Green, Failure = Red)
         today = str(date.today())
-        status = check_mark if today in habit["completed_dates"] else x_mark
-        
+        is_done = today in habit["completed_dates"]
+        icon_color = GREEN if is_done else RED
+        status = f"{icon_color}{check_mark if is_done else x_mark}{RESET}"
+
+        #Streak Color (High Bold Green, no streak red)
+        streak = habit['streak']
+        if streak >= 3:
+            streak_str = f"{GREEN}{BOLD}{streak}{RESET}"
+        elif streak > 0:
+            streak_str = f"{GREEN}{streak}{RESET}"
+        else:
+            streak_str = f"{RED}{streak}{RESET}"
+
+
         # Add a visual indicator for archived habits
         is_active = habit.get("active", True)
-        display_name = habit['task']
+        #display_name = habit['task']
+        #if not is_active:
+        #    display_name += f"  {CYAN}[ARCHIVED]{RESET}"
+
+        #Start with task name
+        task_name = habit['task']
+
+        #Add [ARCHIVED] tag without color to fix padding issue
         if not is_active:
-            display_name += " [ARCHIVED]"
+            full_display = f"{task_name} [ARCHIVED]"
+        else:
+            full_display = task_name
         
-        print(f"{status} {habit['id']:<4} | {display_name:<30} | {habit['streak']:<7}")
+        #Apply padding  to plain text (30 characters)
+        padded_display = f"{full_display:<30}"
+
+        #Inject the color into the padded text for the tag only
+        if not is_active:
+            #Replace plain tag with color one
+            final_display = padded_display.replace("[ARCHIVED]", f"{CYAN}[ARCHIVED]{RESET}")
+        else:
+            final_display = padded_display
+
+        print(f"{status} {habit['id']:<4} | {final_display} | {streak_str}")
     print("\n")
 
 def delete_habit(habit_id):

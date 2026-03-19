@@ -28,13 +28,13 @@ habit-tracker/
 ### Data Management & Recovery
 
 [X] Archive View: Add a --show-deleted flag to the list command to view soft-deleted habits.  
-[] Restore Function: Implement a restore id command to flip the active status back to True.  
+[X] Restore Function: Implement a restore id command to flip the active status back to True.  
 [ ] Data Export: Add a command to export habit history to a CSV format for external analysis.  
 
 ### Customization & UI
 
-[ ] Custom Indicators: Allow users to define their own "Success" and "Failure" icons (e.g., habit set-icon check "✅" or habit set-icon x "❌").  
-[ ] Colorized Output: Integrate terminal color codes (ANSI) to highlight streaks or urgent tasks.  
+[X] Custom Indicators: Allow users to define their own "Success" and "Failure" icons (e.g., habit set-icon check "✅" or habit set-icon x "❌").  
+[X] Colorized Output: Integrate terminal color codes (ANSI) to highlight streaks or urgent tasks.  
 [ ] Progress Bars: Implement a stats view with visual bars representing weekly completion percentages.  
 
 ### Logic Enhancements
