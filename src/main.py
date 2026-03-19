@@ -1,5 +1,5 @@
 import argparse
-from manager import add_habit, complete_habit, list_habits, delete_habit
+from manager import add_habit, complete_habit, list_habits, delete_habit, restore_habit
 
 def main():
     #Create the main parser
@@ -14,12 +14,17 @@ def main():
     done_parser = subparsers.add_parser("done", help="Mark a habit as completed")
     done_parser.add_argument("id", type=int, help="The ID number of the habit")
 
+    #Setup the 'delete' command
     delete_parser = subparsers.add_parser("delete", help="Archive a habit")
     delete_parser.add_argument("id", type=int, help="The ID of the habit to archive")
 
+    # Setup the 'restore' command
+    restore_parser = subparsers.add_parser("restore", help="Restore an archived habit")
+    restore_parser.add_argument("id", type=int, help="The ID of the habit to restore")
+
     #Setup the 'list' command
-    subparsers.add_parser("list", help="Show all active habits and streaks")
-    
+    list_parser = subparsers.add_parser("list", help="Show all active habits and streaks")
+    list_parser.add_argument('--show-deleted', action='store_true')
     #Parse the arguments
     args = parser.parse_args()
 
@@ -28,8 +33,10 @@ def main():
         add_habit(args.name)
     elif args.command == "done":
         complete_habit(args.id)
+    elif args.command == "restore":
+        restore_habit(args.id)
     elif args.command == "list":
-        list_habits()
+        list_habits(show_all=args.show_deleted)
     elif args.command == "delete":
         delete_habit(args.id)
     else:

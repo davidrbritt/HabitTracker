@@ -45,24 +45,32 @@ def complete_habit(habit_id):
             return
     print(f"ERROR: No habit found with ID {habit_id}!")
 
-def list_habits():
+def list_habits(show_all=False):
     data = load_data()
-
-    if not data["habits"]:
-        print("No habits found. Use 'add' to create one!")
+    #Filter: Show everything if show_all is True, otherwise only active habits
+    habits_to_show = data["habits"] if show_all else [h for h in data["habits"] if h.get("active", True)]
+    if not habits_to_show:
+        print("No habits found. Use 'add' to create one! (Try --show-deleted if you have archived ones!)")
         return
     
     print("\n--- Your Active Habits ---")
     print(f"{'ID':<4} | {'Habit Name':<30} | {'Streak':<7}")
     print("-" * 45)
 
-    for habit in data["habits"]:
-        if habit.get("active", True):
-            #Add a checkmark if done today
-            today = str(date.today())
-            status = "✅" if today in habit["completed_dates"] else "❌"
-
-            print(f"{status} {habit['id']:<4} | {habit['task']:<30} | {habit['streak']:<7}")
+    for habit in habits_to_show:
+        #Add a checkmark if done today
+        check_mark = "✅"
+        x_mark = "❌"
+        today = str(date.today())
+        status = check_mark if today in habit["completed_dates"] else x_mark
+        
+        # Add a visual indicator for archived habits
+        is_active = habit.get("active", True)
+        display_name = habit['task']
+        if not is_active:
+            display_name += " [ARCHIVED]"
+        
+        print(f"{status} {habit['id']:<4} | {display_name:<30} | {habit['streak']:<7}")
     print("\n")
 
 def delete_habit(habit_id):
@@ -79,4 +87,25 @@ def delete_habit(habit_id):
         save_data(data)
         print(f"SUCCESS: Habit {habit_id} has been archived.")
     else:
+        print(f"ERROR: Habit {habit_id} not found.")
+
+def restore_habit(habit_id):
+    data = load_data()
+    found = False
+
+    for habit in data["habits"]:
+        if habit["id"] == habit_id:
+            if habit.get("active", True) == True:
+                print(f"ERROR: Habit id {habit_id} is already active. . .")
+                found = True
+                return
+            
+            habit["active"] = True
+            found = True
+            save_data(data)
+            print(f"SUCCESS: Habit {habit_id} ('{habit['task']}') has been restored.")
+            break
+    
+
+    if not found:
         print(f"ERROR: Habit {habit_id} not found.")
