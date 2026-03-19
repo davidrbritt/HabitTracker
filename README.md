@@ -29,7 +29,7 @@ habit-tracker/
 
 [X] Archive View: Add a --show-deleted flag to the list command to view soft-deleted habits.  
 [X] Restore Function: Implement a restore id command to flip the active status back to True.  
-[ ] Data Export: Add a command to export habit history to a CSV format for external analysis.  
+[ ] Data Export: Add a command to export habit histry to a CSV format for external analysis.  
 
 ### Customization & UI
 
@@ -44,6 +44,8 @@ habit-tracker/
 [ ] Time-Travel Debugging: An internal developer command to manually adjust dates for testing streak logic.  
 
 ## TUI Upgrade Plan
+
+### Started 03/18/2026
 
 ### Interface & Layout
 [ ] The "Split-Pane" Dashboard:
