@@ -1,6 +1,9 @@
 # Use a lightweight Python image
 FROM python:3.12-slim
 
+#Prevent python from buffering for TUI
+ENV PYTHONUNBUFFERED=1
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -15,4 +18,4 @@ COPY . .
 
 # Set the command to run your tool
 # This allows you to pass arguments directly to the docker run command
-ENTRYPOINT ["python", "src/main.py"]
+CMD ["python", "tui.py"]
